@@ -1,0 +1,35 @@
+<UserControl x:Class="TradingCompany.WPF.Views.ItemListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Товари" Style="{StaticResource TitleText}"/>
+
+        <!-- Пошук і сортування -->
+        <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+            <TextBox Width="240" Margin="0,0,8,0" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox Width="160" Margin="0,0,8,0" ItemsSource="{Binding SortOptions}"
+                      DisplayMemberPath="Title" SelectedValuePath="Field" SelectedValue="{Binding SortBy}"/>
+            <CheckBox Content="За спаданням" Margin="0,0,12,0" IsChecked="{Binding Descending}"/>
+            <Button Content="Застосувати" Command="{Binding SearchCommand}" IsDefault="True"/>
+            <Button Content="Скинути" Command="{Binding ClearSearchCommand}"/>
+        </WrapPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Margin="0,12,0,0">
+            <Button Content="Створити аукціон для вибраного товару" Command="{Binding CreateAuctionCommand}"
+                    Style="{StaticResource AccentButton}" HorizontalAlignment="Left"
+                    Visibility="{Binding CanManageAuctions, Converter={StaticResource BoolToVisibility}}"/>
+            <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorText}"/>
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№" Binding="{Binding Id, Mode=OneWay}" Width="50"/>
+                <DataGridTextColumn Header="Назва" Binding="{Binding Name, Mode=OneWay}" Width="*"/>
+                <DataGridTextColumn Header="Опис" Binding="{Binding Description, Mode=OneWay}" Width="2*"/>
+                <DataGridTextColumn Header="Категорія" Binding="{Binding CategoryName, Mode=OneWay}" Width="120"/>
+                <DataGridTextColumn Header="Стан" Binding="{Binding ConditionName, Mode=OneWay}" Width="110"/>
+                <DataGridTextColumn Header="Статус" Binding="{Binding StatusText, Mode=OneWay}" Width="110"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</UserControl>
